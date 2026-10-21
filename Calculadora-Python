@@ -1,78 +1,79 @@
-import time
-
-print('Elige la operacion a realizar: ')
-print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar')
+iprint('Elige la operacion a realizar: ')
+print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar 6-Undo')
 opcion = int(input('Introduce la opcion: '))
 
 x1 = float(input('Introduce el primer valor: '))
 parentesis = str(x1)
 
+historial = []
 
-def medir_tiempo(funcion):
-    def funcion_decorada(a, b):
-        inicio = time.time()
+def decorador(simbolo):
+    def decorar(funcion):
+        def funcion_decorada(a, b):
+            global parentesis
 
-        resultado = funcion(a, b)
+            resultado = funcion(a, b)
 
-        fin = time.time()
-        tiempo_transcurrido = fin - inicio
-        print("Función tardó {} segundos en ejecutarse".format(tiempo_transcurrido))
+            print(f"{parentesis} {simbolo} {b} = {resultado}")
+            parentesis = f"({parentesis} {simbolo} {b})"
 
-        return resultado
+            return resultado
 
-    return funcion_decorada
+        return funcion_decorada
+    return decorar
 
-
-@medir_tiempo
+@decorador("+")
 def suma(a,b):
     resultado = a + b
-    print(f"{parentesis} + {x2} = {resultado}")
     return resultado
 
-@medir_tiempo
+@decorador("+")
 def resta(a,b):
     resultado = a - b
-    print(f"{parentesis} - {x2} = {resultado}")
     return resultado
 
-@medir_tiempo
+@decorador("+")
 def multiplicacion(a,b):
     resultado = a * b
-    print(f"{parentesis} * {x2} = {resultado}")
     return resultado
 
-@medir_tiempo
+@decorador("+")
 def division(a,b):
     resultado = a / b
-    print(f"{parentesis} / {x2} =  {resultado}")
     return resultado
-
-
-
 
 while opcion != 5:
     
-    if opcion > 5:
-        print('No es una opcion valida')
-        print("")
-    else:
-        x2 = float(input('Introduce el segundo valor: '))
+    historial.append((x1,parentesis))
+    
+    if opcion == 6:
+        historial = historial[-2]
+        
+    
+    x2 = float(input('Introduce el segundo valor: '))
     
     if opcion == 1:
         resultado = suma(x1,x2)
-        parentesis = f"({parentesis} + {x2})"
     elif opcion == 2:
         resultado = resta(x1,x2)
-        parentesis = f"({parentesis} - {x2})"
     elif opcion == 3:
         resultado = multiplicacion(x1,x2)
-        parentesis = f"({parentesis} * {x2})"
     elif opcion == 4:
-        resultado = division(x1,x2)
-        parentesis = f"({parentesis} / {x2})"
+        try:
+            resultado = division(x1, x2)
+        except ZeroDivisionError:
+            print("No se puede dividir entre cero")
+            x1 = resultado
+
     
     x1 = resultado
+    
+    
+    for x in historial:
+        print(x)
 
     print('Elige la operacion a realizar: ')
-    print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar')
+    print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar 6-Undo')
     opcion = int(input('Introduce la opcion: '))
+    
+    
