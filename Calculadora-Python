@@ -1,5 +1,5 @@
-iprint('Elige la operacion a realizar: ')
-print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar 6-Undo')
+print('Elige la operacion a realizar: ')
+print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar')
 opcion = int(input('Introduce la opcion: '))
 
 x1 = float(input('Introduce el primer valor: '))
@@ -24,31 +24,23 @@ def decorador(simbolo):
 
 @decorador("+")
 def suma(a,b):
-    resultado = a + b
-    return resultado
+    return a + b
 
-@decorador("+")
+@decorador("-")
 def resta(a,b):
-    resultado = a - b
-    return resultado
+    return a - b
 
-@decorador("+")
+@decorador("*")
 def multiplicacion(a,b):
-    resultado = a * b
-    return resultado
+    return a * b
 
-@decorador("+")
+@decorador("/")
 def division(a,b):
-    resultado = a / b
-    return resultado
+    return a / b
 
 while opcion != 5:
     
     historial.append((x1,parentesis))
-    
-    if opcion == 6:
-        historial = historial[-2]
-        
     
     x2 = float(input('Introduce el segundo valor: '))
     
@@ -64,16 +56,27 @@ while opcion != 5:
         except ZeroDivisionError:
             print("No se puede dividir entre cero")
             x1 = resultado
-
     
     x1 = resultado
-    
-    
+        
     for x in historial:
         print(x)
 
+    print('Quieres hacer un Undo: ')
+    undo = input('Y [yes] N [no] == ')
+    undo = undo.upper()
+
+    if undo == "Y":
+        if len(historial) == 0:
+            print("no hay mas pasos disponibles")
+        else:
+            try:
+                paso =  int(input(f"¿Cuanros pasos quiere volver atras? (Maximo posible: {len(historial)})"))
+                
+            except ValueError:
+                print("no es posible porfavor introduzca lo valido")
+
     print('Elige la operacion a realizar: ')
-    print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar 6-Undo')
+    print('1-Suma 2-Resta 3-Multiplicacion 4-Division 5-Cerrar')
     opcion = int(input('Introduce la opcion: '))
-    
-    
+
